@@ -1,0 +1,1 @@
+<% if EmailAFriendLink %><% require javascript(emailreferral/javascript/EmailReferralLink.js) %><p class="emailAFriendLink"><a href="$EmailAFriendLink">email this page ($Title) to a friend</a></p><% end_if %>
