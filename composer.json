@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe/emailreferral",
+	"name": "sunnysideup/emailreferral",
 	"type": "silverstripe-module",
 	"description": "adds the 'email a friend' functionality to your Silverstripe application",
 	"homepage": "http://www.silverstripe-webdevelopment.com",
