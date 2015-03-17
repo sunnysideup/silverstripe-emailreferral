@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="EmailAFriendForm" namespace="" name="EmailAFriendForm" abstract="false" final="false" start="3" end="111">
+  <file path="/var/www/_modules/emailreferral/trunk/docs/en/phpdox/../../../code/forms" file="EmailAFriendForm.php" realpath="/var/www/_modules/emailreferral/trunk/code/forms/EmailAFriendForm.php" size="5104" time="2015-03-14T10:22:51+13:00" unixtime="1426281771" sha1="8d64f8430a2ef11128d00fbcbaea803711da3e6a" relative="code/forms/EmailAFriendForm.php"/>
+  <extends full="Form" namespace="" name="Form"/>
+  <member name="friend_email_address_label" type="string" default="&quot;Friend's Email Address&quot;" visibility="protected" line="5"/>
+  <method name="set_friend_email_address_label" start="6" end="6" abstract="false" final="false" static="true" visibility="public">
+    <parameter name="v" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="get_friend_email_address_label" start="7" end="7" abstract="false" final="false" static="true" visibility="public"/>
+  <member name="message_label" type="string" default="&quot;Message&quot;" visibility="protected" line="9"/>
+  <method name="set_message_label" start="10" end="10" abstract="false" final="false" static="true" visibility="public">
+    <parameter name="v" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="get_message_label" start="11" end="11" abstract="false" final="false" static="true" visibility="public"/>
+  <member name="your_email_address_label" type="string" default="&quot;Your email address&quot;" visibility="protected" line="13"/>
+  <method name="set_your_email_address_label" start="14" end="14" abstract="false" final="false" static="true" visibility="public">
+    <parameter name="v" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="get_your_email_address_label" start="15" end="15" abstract="false" final="false" static="true" visibility="public"/>
+  <member name="send_label" type="string" default="'Send'" visibility="protected" line="17"/>
+  <method name="set_send_label" start="18" end="18" abstract="false" final="false" static="true" visibility="public">
+    <parameter name="v" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="get_send_label" start="19" end="19" abstract="false" final="false" static="true" visibility="public"/>
+  <constructor name="__construct" start="21" end="39" abstract="false" final="false" static="false" visibility="public">
+    <parameter name="controller" byreference="false" type="{unknown}"/>
+    <parameter name="name" byreference="false" type="{unknown}"/>
+    <parameter name="id" byreference="false" type="{unknown}"/>
+  </constructor>
+  <method name="sendEmailAFriend" start="41" end="110" abstract="false" final="false" static="false" visibility="public">
+    <parameter name="RAW_data" byreference="false" type="{unknown}"/>
+    <parameter name="form" byreference="false" type="{unknown}"/>
+  </method>
+</class>

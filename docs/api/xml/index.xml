@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index xmlns="http://xml.phpdox.net/src" basedir="/var/www/_modules/emailreferral/trunk">
+  <namespace name="">
+    <class name="FriendEmailAdmin" src="code/model/FriendEmailAdmin.php" xml="classes/FriendEmailAdmin.xml"/>
+    <class name="FriendEmail" src="code/model/FriendEmail.php" xml="classes/FriendEmail.xml"/>
+    <class name="EmailAFriendForm" src="code/forms/EmailAFriendForm.php" xml="classes/EmailAFriendForm.xml"/>
+    <class name="EmailAFriendExtension" src="code/extensions/EmailAFriendExtension.php" xml="classes/EmailAFriendExtension.xml"/>
+    <class name="EmailAFriendExtension_Controller" src="code/extensions/EmailAFriendExtension.php" xml="classes/EmailAFriendExtension_Controller.xml"/>
+  </namespace>
+</index>

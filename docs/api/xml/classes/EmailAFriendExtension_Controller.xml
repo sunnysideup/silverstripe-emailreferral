@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="EmailAFriendExtension_Controller" namespace="" name="EmailAFriendExtension_Controller" abstract="false" final="false" start="48" end="72">
+  <file path="/var/www/_modules/emailreferral/trunk/docs/en/phpdox/../../../code/extensions" file="EmailAFriendExtension.php" realpath="/var/www/_modules/emailreferral/trunk/code/extensions/EmailAFriendExtension.php" size="2325" time="2015-03-14T10:22:51+13:00" unixtime="1426281771" sha1="79b52336669fc97ac314f3c99dba438f3ffc1965" relative="code/extensions/EmailAFriendExtension.php"/>
+  <extends full="Extension" namespace="" name="Extension"/>
+  <member name="allowed_actions" type="array" visibility="public" line="50"/>
+  <member name="emailAFriendShowForm" type="{unknown}" default="false" visibility="protected" line="52"/>
+  <method name="emailafriend" start="54" end="57" abstract="false" final="false" static="false" visibility="public"/>
+  <method name="EmailAFriendForm" start="60" end="62" abstract="false" final="false" static="false" visibility="public"/>
+  <method name="EmailAFriendShowForm" start="65" end="67" abstract="false" final="false" static="false" visibility="public"/>
+</class>
