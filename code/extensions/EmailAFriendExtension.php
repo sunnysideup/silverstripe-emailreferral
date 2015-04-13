@@ -44,7 +44,7 @@ class EmailAFriendExtension extends SiteTreeExtension {
 	 * @return String
 	 */
 	function EmailAFriendLink() {
-		if($this->owner->param("Action") != "emailafriend") {
+		if($this->owner->request->param("Action") != "emailafriend") {
 			return $this->owner->Link('emailafriend');
 		}
 	}
