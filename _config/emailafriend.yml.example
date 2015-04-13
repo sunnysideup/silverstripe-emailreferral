@@ -1,0 +1,24 @@
+---
+name: EmailAFriendExtras
+---
+
+SiteTree:
+  extensions:
+    - EmailAFriendExtension
+
+SiteTree:
+  extensions:
+    - EmailAFriendExtension_Controller
+
+EmailAFriendForm:
+  friend_email_address_label: "Friend#039;s Email Address"
+  message_label: "Message"
+  your_email_address_label: "Your email address"
+  send_label: "Send"
+
+EmailAFriendExtension:
+  sender_email_address: "bla@foo.bar"
+  sender_name: "my name goes here
+  mail_subject: "subject of email goes here"
+  default_message: "hello from us"
+  max_message_phour_pip: 5
