@@ -40,23 +40,6 @@ class EmailAFriendExtension extends SiteTreeExtension {
 		}
 	}
 
-	/**
-	 * @return String
-	 */
-	function EmailAFriendLink() {
-		if($this->owner->request->param("Action") != "emailafriend") {
-			return $this->owner->Link('emailafriend');
-		}
-	}
-	protected $emailAFriendThankYouContent = "";
-
-	function setEmailAFriendThankYouContent($v) {
-		$this->emailAFriendThankYouContent = $v;
-	}
-
-	function EmailAFriendThankYouContent() {
-		return $this->emailAFriendThankYouContent;
-	}
 }
 
 
@@ -80,5 +63,23 @@ class EmailAFriendExtension_Controller extends Extension {
 
 	function EmailAFriendShowForm() {
 		return $this->emailAFriendShowForm;
+	}
+
+	/**
+	 * @return String
+	 */
+	function EmailAFriendLink() {
+		if($this->owner->request->param("Action") != "emailafriend") {
+			return $this->owner->Link('emailafriend');
+		}
+	}
+	protected $emailAFriendThankYouContent = "";
+
+	function setEmailAFriendThankYouContent($v) {
+		$this->emailAFriendThankYouContent = $v;
+	}
+
+	function EmailAFriendThankYouContent() {
+		return $this->emailAFriendThankYouContent;
 	}
 }
