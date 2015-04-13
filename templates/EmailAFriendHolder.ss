@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
 	<% base_tag %>
-	$ExtendedMetatags
 </head>
 <body id="body{$ClassName}">
 <div id="Wrapper">
@@ -20,6 +19,5 @@
 		</div>
 	</div>
 </div>
-<% include Analytics %>
 </body>
 </html>

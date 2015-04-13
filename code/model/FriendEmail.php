@@ -2,25 +2,46 @@
 
 class FriendEmail extends DataObject {
 
-	static $db = array(
-		'To' => 'Varchar(200)',
+	private static $db = array(
+		'To' => 'Text',
 		'Message' => 'Text',
-		'From' => 'Varchar(200)',
-		'IPAddress' => 'Varchar(50)'
+		'From' => 'Text',
+		'IPAddress' => 'Text'
 	);
 
-	static $has_one = array(
+	private static $has_one = array(
 		'Page' => 'Page'
 	);
 
-	static $searchable_fields = array('To', 'Message', 'From', 'IPAddress', 'Page.Title');
+	private static $casting = array(
+		"ShortMessage" => "Varchar"
+	);
 
-	static $summary_fields = array('Created', 'To', 'Message', 'From', 'IPAddress', 'Page.Title');
+	function ShortMessage() { return $this->getShortMessage();}
+	function getShortMessage() {
+		return substr($this->Message, 0, 30);
+	}
 
-	static $singular_name = 'Friend Email';
+	function canCreate($member = null) {
+		return false;
+	}
 
-	static $plural_name = 'Friend Emails';
+	function canEdit($member = null) {
+		return false;
+	}
 
-	static $default_sort = 'Created DESC';
+	function canDelete($member = null) {
+		return false;
+	}
+
+	private static $searchable_fields = array('To', 'Message', 'From', 'IPAddress', 'Page.Title');
+
+	private static $summary_fields = array('Created', 'To', 'ShortMessage', 'From', 'IPAddress', 'Page.Title');
+
+	private static $singular_name = 'Message to Friend';
+
+	private static $plural_name = 'Messages to Friends';
+
+	private static $default_sort = 'Created DESC';
 }
 

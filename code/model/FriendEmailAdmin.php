@@ -1,12 +1,14 @@
 <?php
 
-class FriendEmailAdmin extends ModelAdmin {
 
-	public static $managed_models = array('FriendEmail');
+class FriendEmailAdmin extends ModelAdmin{
 
-	static $url_segment = 'friendemails';
+	private static $managed_models = array("FriendEmail");
 
-	static $menu_title = 'Friends';
+	private static $url_segment = 'emails';
+
+	private static $menu_title = 'Friend Emails';
+
+	public $showImportForm = false;
 
 }
-

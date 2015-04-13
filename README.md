@@ -1,18 +1,27 @@
-Email Referral
-================================================================================
+Email A Friend
+===============================================
 
+Allow the user to email a page to a friend.
 
 Developer
 -----------------------------------------------
-Nicolaas [at] sunnysideup.co.nz
+Nicolaas Francken [at] sunnysideup.co.nz
+
 
 Requirements
 -----------------------------------------------
 see composer.json
 
+
 Documentation
 -----------------------------------------------
-see http://silverstripe-webdevelopment.com/faqs
+Please contact author for more details.
+
+Any bug reports and/or feature requests will be
+looked at in detail
+
+We are also very happy to provide personalised support
+for this module in exchange for a small donation.
 
 
 Installation Instructions
@@ -27,9 +36,9 @@ you can usually find some examples of config options (if any).
 3. review css and templates and see if you need to theme it
 (rather than using the "unthemed" default provided.
 
-
 USE:
 
 $EmailAFriendLink
  and
 EmailAFriendForm
+

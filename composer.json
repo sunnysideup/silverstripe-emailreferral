@@ -2,8 +2,8 @@
 	"name": "sunnysideup/emailreferral",
 	"type": "silverstripe-module",
 	"description": "adds the 'email a friend' functionality to your Silverstripe application",
-	"homepage": "http://www.silverstripe-webdevelopment.com",
-	"keywords": ["emailreferral", "silverstripe"],
+	"homepage": "https://github.com/sunnysideup/silverstripe-emailafriend",
+	"keywords": ["social media", "silverstripe", "email", "share", "email-a-friend", "friends", "promote"],
 	"license": "Sunny Side Up (BSD-3-Clause and CUSTOM)",
 	"authors":[
 		{
@@ -14,7 +14,10 @@
 		}
 	],
 	"require":{
-		"php": ">=5.3.2",
-		"silverstripe/framework": "~2.4"
+		"silverstripe/framework": "~3.1",
+		"silverstripe/cms": "~3.1"
+	},
+	"extra": {
+		"installer-name": "emailafriend"
 	}
 }

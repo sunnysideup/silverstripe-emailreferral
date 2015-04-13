@@ -2,23 +2,39 @@
 
 class EmailAFriendForm extends Form {
 
-	protected static $friend_email_address_label = "Friend's Email Address";
-		static function set_friend_email_address_label($v) {self::$friend_email_address_label = $v;}
-		static function get_friend_email_address_label() {return self::$friend_email_address_label;}
+	/**
+	 * @var String
+	 */
+	private static $friend_email_address_label = "Friend#039;s Email Address";
 
-	protected static $message_label = "Message";
-		static function set_message_label($v) {self::$message_label = $v;}
-		static function get_message_label() {return self::$message_label;}
+	/**
+	 * @var String
+	 */
+	private static $message_label = "Message";
 
-	protected static $your_email_address_label = "Your email address";
-		static function set_your_email_address_label($v) {self::$your_email_address_label = $v;}
-		static function get_your_email_address_label() {return self::$your_email_address_label;}
+	/**
+	 * @var String
+	 */
+	private static $your_email_address_label = "Your email address";
 
-	protected static $send_label = 'Send';
-		static function set_send_label($v) {self::$send_label = $v;}
-		static function get_send_label() {return self::$send_label;}
+	/**
+	 * @var String
+	 */
+	private static $send_label = 'Send';
 
-	function __construct($controller, $name, $id) {
+	/**
+	 * @param Controller $controller
+	 * @param String $name
+	 */
+	function __construct($controller, $name) {
+		$fields[] = new TextField('To', $this->Config()->get("friend_email_address_label");
+		$fields[] = new TextareaField(
+			'Message',
+			$this->Config()->get("message_label"),
+			$this->Config()->get("EmailAFriendExtension", "default_message")
+		);
+		$fields[] = new EmailField('YourMailAddress', $this->Config()->get("your_email_address_label"));
+		$fields[] = new HiddenField('PageID', 'PageID', $controller->dataRecord->ID);
 		Requirements::themedCSS("EmailReferral");
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript("emailreferral/javascript/EmailReferralForm.js");
@@ -29,42 +45,59 @@ class EmailAFriendForm extends Form {
 		$fields[] = new EmailField('YourMailAddress', self::$your_email_address_label);
 		$fields[] = new HiddenField('PageID', 'PageID', $id);
 
-		$fields = new FieldSet($fields);
+		$fields = new FieldList($fields);
 
-		$actions = new FieldSet(new FormAction('sendEmailAFriend', self::$send_label));
+		$actions = new FieldList(new FormAction('sendemailafriend', $this->Config()->get("send_label"));
 
 		$requiredFields = new RequiredFields(array('To', 'Message'));
 
 		parent::__construct($controller, $name, $fields, $actions, $requiredFields);
 	}
 
-	function sendEmailAFriend($RAW_data, $form) {
-		$bt = defined('DB::USE_ANSI_SQL') ? "\"" : "`";
+	/**
+	 *
+	 * @param Array
+	 * @param EmailAFriendForm
+	 */
+	function sendemailafriend($RAW_data, $form) {
 		$data = Convert::raw2sql($RAW_data);
-		if($page = DataObject::get_by_id('Page', $data['PageID'])) $pageLink = $page->AbsoluteLink();
-
+		if($page = Page::get()->byID(intval($data['PageID']))) {
+			$pageLink = $page->AbsoluteLink();
+		}
 		$tos = explode(',', $data['To']);
 		$toList = array();
 		foreach($tos as $to) $toList = array_merge($toList, explode(';', $to));
 		if($data['YourMailAddress']) $toList[] = $data['YourMailAddress'];
 		$ip = EmailAFriendExtension::get_ip_user();
 		$count = 0;
-		if(EmailAFriendExtension::get_max_message_phour_pip()) {
+		if($this->Config()->get("EmailAFriendExtension", "max_message_phour_pip")) {
 			$anHourAgo = date('Y-m-d H:i:s', mktime(date('G') - 1, date('i'), date('s'), date('n'), date('j'), date('Y')));
-			if($friendMails = DataObject::get('FriendEmail', "{$bt}IPAddress{$bt} = '$ip' AND {$bt}Created{$bt} > '$anHourAgo'")) {
-				$count = $friendMails->Count();
+			$count = FriendEmail::get()->filter(
+				array(
+					"IPAddress" => $ip,
+					"Created:GreaterThan" => $anHourAgo
+				)
+			)->count();
+		}
+		if($this->Config()->get("EmailAFriendExtension", "sender_name")) {
+			$mailFrom = $this->Config()->get("EmailAFriendExtension", "sender_name")
+			if($this->Config()->get("EmailAFriendRole", "sender_email_address")) {
+				$mailFrom .= ' <' . $this->Config()->get("EmailAFriendExtension", "sender_email_address") . '>';
 			}
 		}
-
-		if(EmailAFriendExtension::get_sender_name()) {
-			$mailFrom = EmailAFriendExtension::get_sender_name();
-			if(EmailAFriendExtension::get_sender_email_address()) $mailFrom .= ' <' . EmailAFriendExtension::get_sender_email_address() . '>';
+		elseif($this->Config()->get("EmailAFriendExtension", "sender_email_address")) {
+			$mailFrom = $this->Config()->get("EmailAFriendExtension", "sender_email_address");
 		}
-		else if(EmailAFriendExtension::get_sender_email_address()) $mailFrom = EmailAFriendExtension::get_sender_email_address();
-		else $mailFrom = 'Unknown Sender';
+		else {
+			$mailFrom = 'Unknown Sender';
+		}
 
 		foreach($toList as $index => $to) {
-			if(! EmailAFriendExtension::get_max_message_phour_pip() || $count < EmailAFriendExtension::get_max_message_phour_pip()) {
+			$messagesPerHour = $this->Config()->get("EmailAFriendExtension", "max_message_phour_pip");
+			if($messagesPerHour && $count > $messagesPerHour) {
+				//do nothing
+			}
+			else {
 				$friendEmail = new FriendEmail();
 				$friendEmail->To = $to;
 				$friendEmail->Message = $data['Message'];
@@ -72,8 +105,8 @@ class EmailAFriendForm extends Form {
 				$friendEmail->IPAddress = $ip;
 				$friendEmail->PageID = $data['PageID'];
 				$friendEmail->write();
-				$subject = EmailAFriendExtension::get_mail_subject() ? EmailAFriendExtension::get_mail_subject() : '';
-				$subject .= ' | from '.$data['YourMailAddress'];
+				$subject = $this->Config()->get("EmailAFriendExtension", "mail_subject");
+				$subject .= ' | sent by '.$data['YourMailAddress'];
 				$count++;
 				$email = new Email(
 					$mailFrom,
@@ -94,19 +127,28 @@ class EmailAFriendForm extends Form {
 			$endIndex = isset($stopIndex) ? $stopIndex : count($toList);
 			if(! isset($stopIndex) || $stopIndex > 0) {
 				$content .= '<p class="message good">This page has been successfully emailed to the following addresses :</p><ul>';
-				for($i = 0; $i < $endIndex; $i++) $content .= '<li>' . $toList[$i] . '</li>';
+				for($i = 0; $i < $endIndex; $i++) {
+					$content .= '<li>' . $toList[$i] . '</li>';
+				}
 				$content .= '</ul>';
 			}
 			if($endIndex < count($toList)) {
 				$content .= '<p class="message required">This page could not be emailed to the following addresses :</p><ul>';
-				for($i = $endIndex; $i < count($toList); $i++) $content .= '<li>' . $toList[$i] . '</li>';
+				for($i = $endIndex; $i < count($toList); $i++) {
+					$content .= '<li>' . $toList[$i] . '</li>';
+				}
 				$content .= '</ul>';
 			}
 		}
-		else $content = '<p class="message required">This page has not been emailed to anyone.</p>';
+		else {
+				$content = '<p class="message required bad">This page has not been emailed to anyone.</p>';
+		}
+
+		$content .= '<br/><p>Click <a href="' . $this->controller->Link() . '">here</a> to go back to the previous page.</p>';
 
 		$templateData = array("EmailAFriendThankYouContent" => $content);
 		return $this->customise($templateData)->renderWith('EmailAFriendHolder');
+
 	}
 }
 
