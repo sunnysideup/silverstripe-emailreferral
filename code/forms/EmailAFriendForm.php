@@ -27,29 +27,26 @@ class EmailAFriendForm extends Form {
 	 * @param String $name
 	 */
 	function __construct($controller, $name) {
-		$fields[] = new TextField('To', $this->Config()->get("friend_email_address_label");
+		Requirements::themedCSS("EmailReferral", "emailreferral");
+		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
+		Requirements::javascript("emailreferral/javascript/EmailReferralForm.js");
+
+		$fields[] = new HiddenField('PageID', 'PageID', $controller->dataRecord->ID);
+
+		$fields[] = new EmailField('To', $this->Config()->get("your_email_address_label"));
 		$fields[] = new TextareaField(
 			'Message',
 			$this->Config()->get("message_label"),
 			$this->Config()->get("EmailAFriendExtension", "default_message")
 		);
-		$fields[] = new EmailField('YourMailAddress', $this->Config()->get("your_email_address_label"));
-		$fields[] = new HiddenField('PageID', 'PageID', $controller->dataRecord->ID);
-		Requirements::themedCSS("EmailReferral");
-		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
-		Requirements::javascript("emailreferral/javascript/EmailReferralForm.js");
-
-		$fields[] = new EmailField('To', self::$friend_email_address_label);
-		$fields[] = new TextareaField('Message', self::$message_label, 5, 20, EmailAFriendExtension::get_default_message() ? EmailAFriendExtension::get_default_message() : '');
 		$fields[] = new LiteralField('AdditionalMessage', '<div id="additionalMessageStuff"><p>'.Director::absoluteURL($controller->Link()).'</p><p>Sent by: <span id="emailReplacer">[your email address]</span></p></div>');
-		$fields[] = new EmailField('YourMailAddress', self::$your_email_address_label);
-		$fields[] = new HiddenField('PageID', 'PageID', $id);
+		$fields[] = new EmailField('YourMailAddress', $this->Config()->get("friend_email_address_label"));
 
 		$fields = new FieldList($fields);
 
-		$actions = new FieldList(new FormAction('sendemailafriend', $this->Config()->get("send_label"));
+		$actions = new FieldList(new FormAction('sendemailafriend', $this->Config()->get("send_label")));
 
-		$requiredFields = new RequiredFields(array('To', 'Message'));
+		$requiredFields = new RequiredFields(array('YourMailAddress', 'To', 'Message'));
 
 		parent::__construct($controller, $name, $fields, $actions, $requiredFields);
 	}
@@ -80,7 +77,7 @@ class EmailAFriendForm extends Form {
 			)->count();
 		}
 		if($this->Config()->get("EmailAFriendExtension", "sender_name")) {
-			$mailFrom = $this->Config()->get("EmailAFriendExtension", "sender_name")
+			$mailFrom = $this->Config()->get("EmailAFriendExtension", "sender_name");
 			if($this->Config()->get("EmailAFriendRole", "sender_email_address")) {
 				$mailFrom .= ' <' . $this->Config()->get("EmailAFriendExtension", "sender_email_address") . '>';
 			}
@@ -95,7 +92,8 @@ class EmailAFriendForm extends Form {
 		foreach($toList as $index => $to) {
 			$messagesPerHour = $this->Config()->get("EmailAFriendExtension", "max_message_phour_pip");
 			if($messagesPerHour && $count > $messagesPerHour) {
-				//do nothing
+				$stopIndex = $index;
+				break;
 			}
 			else {
 				$friendEmail = new FriendEmail();
@@ -107,18 +105,19 @@ class EmailAFriendForm extends Form {
 				$friendEmail->write();
 				$subject = $this->Config()->get("EmailAFriendExtension", "mail_subject");
 				$subject .= ' | sent by '.$data['YourMailAddress'];
-				$count++;
 				$email = new Email(
 					$mailFrom,
 					$to,
 					$subject,
 					Convert::raw2xml($data['Message']) . '<br/><br/>Page Link : ' . $pageLink. '<br /><br />Sent by: '.$data['YourMailAddress']
 				);
-				$email->send();
-			}
-			else {
-				$stopIndex = $index;
-				break;
+				$outcome = $email->send();
+				if($outcome) {
+					$count++;
+				}
+				else {
+					unset($toList[$index]);
+				}
 			}
 		}
 
