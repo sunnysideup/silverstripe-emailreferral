@@ -32,15 +32,19 @@ class EmailAFriendExtension extends SiteTreeExtension {
 	 * @return String
 	 */
 	public static function get_ip_user() {
-		if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])) return $_SERVER['HTTP_X_FORWARDED_FOR'];
-		else return isset($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : $_SERVER['REMOTE_ADDR'];
+		if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+			return $_SERVER['HTTP_X_FORWARDED_FOR'];
+		}
+		else {
+			return isset($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : $_SERVER['REMOTE_ADDR'];
+		}
 	}
 
 	/**
 	 * @return String
 	 */
 	function EmailAFriendLink() {
-		if(Director::URLParam("Action") != "emailafriend") {
+		if($this->owner->URLParam("Action") != "emailafriend") {
 			return $this->owner->Link('emailafriend');
 		}
 	}
