@@ -15,7 +15,7 @@ EmailAFriendForm:
   message_label: "Message"
   your_email_address_label: "Your email address"
   send_label: "Send"
-  mail_to_site_owner_only: true
+  mail_to_site_owner_only: 'yes'
 
 EmailAFriendExtension:
   sender_email_address: "bla@foo.bar"
