@@ -23,6 +23,11 @@ class EmailAFriendForm extends Form {
 	private static $send_label = 'Send';
 
 	/**
+	 * @var String
+	 */
+	private static $mail_to_site_owner_only = false;
+
+	/**
 	 * @param Controller $controller
 	 * @param String $name
 	 */
@@ -33,20 +38,26 @@ class EmailAFriendForm extends Form {
 
 		$fields[] = new HiddenField('PageID', 'PageID', $controller->dataRecord->ID);
 
-		$fields[] = new EmailField('To', $this->Config()->get("your_email_address_label"));
+		$fields[] = new EmailField('YourMailAddress', $this->Config()->get("your_email_address_label"));
 		$fields[] = new TextareaField(
 			'Message',
 			$this->Config()->get("message_label"),
 			$this->Config()->get("EmailAFriendExtension", "default_message")
 		);
-		$fields[] = new LiteralField('AdditionalMessage', '<div id="additionalMessageStuff"><p>'.Director::absoluteURL($controller->Link()).'</p><p>Sent by: <span id="emailReplacer">[your email address]</span></p></div>');
-		$fields[] = new EmailField('YourMailAddress', $this->Config()->get("friend_email_address_label"));
+		if($this->Config()->get("mail_to_site_owner_only")) {
+			$fields[] = new LiteralField('AdditionalMessage', '<div id="additionalMessageStuff"><p>'.Director::absoluteURL($controller->Link()).'</p><p>Sent by: <span id="emailReplacer">[your email address]</span></p></div>');
+			$fields[] = new EmailField('To', $this->Config()->get("friend_email_address_label"));
+		}
 
 		$fields = new FieldList($fields);
 
 		$actions = new FieldList(new FormAction('sendemailafriend', $this->Config()->get("send_label")));
-
-		$requiredFields = new RequiredFields(array('YourMailAddress', 'To', 'Message'));
+		if($this->Config()->get("mail_to_site_owner_only")) {
+			$requiredFields = new RequiredFields(array('YourMailAddress', 'To', 'Message'));
+		}
+		else {
+			$requiredFields = new RequiredFields(array('YourMailAddress', 'Message'));
+		}
 
 		parent::__construct($controller, $name, $fields, $actions, $requiredFields);
 	}
