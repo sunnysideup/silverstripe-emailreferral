@@ -169,7 +169,7 @@ class EmailAFriendForm extends Form {
 			$content = '<p class="message required bad">This page has not been e-mailed to anyone.</p>';
 		}
 
-		$content .= '<br/><p>Click <a href="' . $this->controller->Link() . '">reset page</a>.</p>';
+		$content .= '<br/><p><a href="' . $this->controller->Link() . '">Send more?</a>.</p>';
 
 		$templateData = array("EmailAFriendForm" => null, "EmailAFriendThankYouContent" => $content);
 		return $this->customise($templateData)->renderWith('EmailAFriendHolder');
