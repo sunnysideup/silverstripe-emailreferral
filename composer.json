@@ -1,23 +1,29 @@
 {
-	"name": "sunnysideup/emailreferral",
-	"type": "silverstripe-module",
-	"description": "adds the 'email a friend' functionality to your Silverstripe application",
-	"homepage": "https://github.com/sunnysideup/silverstripe-emailafriend",
-	"keywords": ["social media", "silverstripe", "email", "share", "email-a-friend", "friends", "promote"],
-	"license": "Sunny Side Up (BSD-3-Clause and CUSTOM)",
-	"authors":[
-		{
-			"name": "Nicolaas Francken",
-			"homepage": "https://github.com/sunnysideup",
-			"email" : "modules@sunnysideup.co.nz",
-			"role" : "lead developer"
-		}
-	],
-	"require":{
-		"silverstripe/framework": "~3.1",
-		"silverstripe/cms": "~3.1"
-	},
-	"extra": {
-		"installer-name": "emailafriend"
-	}
+    "name": "sunnysideup/emailreferral",
+    "type": "silverstripe-module",
+    "description": "adds the 'email a friend' functionality to your Silverstripe application",
+    "keywords": [
+        "social media",
+        "silverstripe",
+        "email",
+        "share",
+        "email-a-friend",
+        "friends",
+        "promote"
+    ],
+    "license": "Sunny Side Up (BSD-3-Clause and CUSTOM)",
+    "authors": [
+        {
+            "name": "Nicolaas Francken",
+            "email": "modules@sunnysideup.co.nz",
+            "role": "lead developer"
+        }
+    ],
+    "require": {
+        "silverstripe/framework": "~3.1",
+        "silverstripe/cms": "~3.1"
+    },
+    "extra": {
+        "installer-name": "emailafriend"
+    }
 }
