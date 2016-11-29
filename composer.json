@@ -3,8 +3,10 @@
     "type": "silverstripe-module",
     "description": "adds the 'email a friend' functionality to your Silverstripe application",
     "keywords": [
+        "Silverstripe-CMS",
+        "CMS",
+        "Silverstripe",
         "social media",
-        "silverstripe",
         "email",
         "share",
         "email-a-friend",
