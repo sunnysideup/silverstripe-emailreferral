@@ -1,44 +1,72 @@
-Email A Friend
-===============================================
+# Silverstripe emailreferral module
+[![Build Status](https://travis-ci.org/sunnysideup/silverstripe-emailreferral.svg?branch=master)](https://travis-ci.org/sunnysideup/silverstripe-emailreferral)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sunnysideup/silverstripe-emailreferral/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sunnysideup/silverstripe-emailreferral/?branch=master)
+[![codecov.io](https://codecov.io/github/sunnysideup/silverstripe-emailreferral/coverage.svg?branch=master)](https://codecov.io/github/sunnysideup/silverstripe-emailreferral?branch=master)
+![helpfulrobot](https://helpfulrobot.io/sunnysideup/emailreferral/badge)
 
-Allow the user to email a page to a friend.
-
-Developer
------------------------------------------------
-Nicolaas Francken [at] sunnysideup.co.nz
-
-
-Requirements
------------------------------------------------
-see composer.json
+[![Latest Stable Version](https://poser.pugx.org/sunnysideup/emailreferral/version)](https://packagist.org/packages/sunnysideup/emailreferral)
+[![License](https://poser.pugx.org/sunnysideup/emailreferral/license)](https://packagist.org/packages/sunnysideup/emailreferral)
+[![Monthly Downloads](https://poser.pugx.org/sunnysideup/emailreferral/d/monthly)](https://packagist.org/packages/sunnysideup/emailreferral)
 
 
-Documentation
------------------------------------------------
-Please contact author for more details.
-
-Any bug reports and/or feature requests will be
-looked at in detail
-
-We are also very happy to provide personalised support
-for this module in exchange for a small donation.
+## Documentation
 
 
-Installation Instructions
------------------------------------------------
-1. Find out how to add modules to SS and add module as per usual.
 
-2. Review configs and add entries to mysite/_config/config.yml
-(or similar) as necessary.
-In the _config/ folder of this module
-you can usually find some examples of config options (if any).
+ * [Developer Docs](docs/en/INDEX.md)
+ * [User Guide](docs/en/userguide.md)
+ * [API](http://ssmods.com/apis/emailreferral/docs/en/api/)
 
-3. review css and templates and see if you need to theme it
-(rather than using the "unthemed" default provided.
+## Requirements
 
-USE:
 
-$EmailAFriendLink
- and
-EmailAFriendForm
 
+see [composer.json](composer.json) for details
+
+### Suggested Modules
+
+
+
+see [composer.json](composer.json) for details
+
+
+## Installation
+
+
+```
+composer require sunnysideup/emailreferral
+```
+
+### Configuration
+
+
+
+In the `_config` folder you will find the `emailreferral.yml.example`
+file that shows options for the configuration of this module.
+
+We recommend that you:
+
+  1. copy these `emailreferral.yml.example` files into your
+`mysite/_config` folder
+  2. remove the .example extension
+  3. delete the lines you not care about, and
+  4. adjust the configurations that you would like to use.
+
+
+## Contributing
+
+
+
+We welcome any contributions. See [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+
+## Paid assistance
+
+
+
+You can pay us to create an improved / adapted version of this module for your own projects.  Please contact us if you like to find out more: [www.sunnysideup.co.nz](http://www.sunnysideup.co.nz)
+
+## Author
+
+
+
+Sunny Side Up Ltd.
