@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<class xmlns="http://xml.phpdox.net/src" full="FriendEmailAdmin" namespace="" name="FriendEmailAdmin" abstract="false" final="false" start="3" end="11">
-  <file path="/var/www/_modules/emailreferral/trunk/docs/en/phpdox/../../../code/model" file="FriendEmailAdmin.php" realpath="/var/www/_modules/emailreferral/trunk/code/model/FriendEmailAdmin.php" size="185" time="2015-03-14T10:22:51+13:00" unixtime="1426281771" sha1="a3a3d6b4bbd7700abc5419e20c6f6299802ddd1f" relative="code/model/FriendEmailAdmin.php"/>
-  <extends full="ModelAdmin" namespace="" name="ModelAdmin"/>
-  <member name="managed_models" type="array" visibility="public" line="5"/>
-  <member name="url_segment" type="string" default="'friendemails'" visibility="public" line="7"/>
-  <member name="menu_title" type="string" default="'Friends'" visibility="public" line="9"/>
-</class>
