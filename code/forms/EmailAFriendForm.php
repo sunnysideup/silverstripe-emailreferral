@@ -45,7 +45,7 @@ class EmailAFriendForm extends Form
         $fields[] = new TextareaField(
             'Message',
             $this->Config()->get("message_label"),
-            $this->Config()->get("EmailAFriendExtension", "default_message")
+            Config::inst()->get("EmailAFriendExtension", "default_message")
         );
         if ($this->Config()->get("mail_to_site_owner_only") != 'yes') {
             $fields[] = new LiteralField('AdditionalMessage', '<div id="additionalMessageStuff"><p>'.Director::absoluteURL($controller->Link()).'</p><p>Sent by: <span id="emailReplacer">[your email address]</span></p></div>');
@@ -90,7 +90,7 @@ class EmailAFriendForm extends Form
         }
         $ip = EmailAFriendExtension::get_ip_user();
         $count = 0;
-        if ($this->Config()->get("EmailAFriendExtension", "max_message_phour_pip")) {
+        if (Config::inst()->get("EmailAFriendExtension", "max_message_phour_pip")) {
             $anHourAgo = date('Y-m-d H:i:s', mktime(date('G') - 1, date('i'), date('s'), date('n'), date('j'), date('Y')));
             $count = FriendEmail::get()->filter(
                 array(
@@ -102,19 +102,19 @@ class EmailAFriendForm extends Form
         if ($this->Config()->get("mail_to_site_owner_only") != 'yes') {
             $mailFrom = $data['YourMailAddress'];
         } else {
-            if ($this->Config()->get("EmailAFriendExtension", "sender_name")) {
-                $mailFrom = $this->Config()->get("EmailAFriendExtension", "sender_name");
-                if ($this->Config()->get("EmailAFriendRole", "sender_email_address")) {
-                    $mailFrom .= ' <' . $this->Config()->get("EmailAFriendExtension", "sender_email_address") . '>';
+            if (Config::inst()->get("EmailAFriendExtension", "sender_name")) {
+                $mailFrom = Config::inst()->get("EmailAFriendExtension", "sender_name");
+                if (Config::inst()->get("EmailAFriendRole", "sender_email_address")) {
+                    $mailFrom .= ' <' .Config::inst()->get("EmailAFriendExtension", "sender_email_address") . '>';
                 }
-            } elseif ($this->Config()->get("EmailAFriendExtension", "sender_email_address")) {
-                $mailFrom = $this->Config()->get("EmailAFriendExtension", "sender_email_address");
+            } elseif (Config::inst()->get("EmailAFriendExtension", "sender_email_address")) {
+                $mailFrom = Config::inst()->get("EmailAFriendExtension", "sender_email_address");
             } else {
                 $mailFrom = $adminEmail;
             }
         }
         foreach ($toList as $index => $to) {
-            $messagesPerHour = $this->Config()->get("EmailAFriendExtension", "max_message_phour_pip");
+            $messagesPerHour = Config::inst()->get("EmailAFriendExtension", "max_message_phour_pip");
             if ($messagesPerHour && $count > $messagesPerHour) {
                 $stopIndex = $index;
                 break;
@@ -126,7 +126,7 @@ class EmailAFriendForm extends Form
                 $friendEmail->IPAddress = $ip;
                 $friendEmail->PageID = $data['PageID'];
                 $friendEmail->write();
-                $subject = $this->Config()->get("EmailAFriendExtension", "mail_subject");
+                $subject = Config::inst()->get("EmailAFriendExtension", "mail_subject");
                 $subject .= ' | sent by '.$data['YourMailAddress'];
                 $email = new Email(
                     $mailFrom,
@@ -164,9 +164,10 @@ class EmailAFriendForm extends Form
             $content = '<p class="message required bad">This page has not been e-mailed to anyone.</p>';
         }
 
-        $content .= '<br/><p><a href="' . $this->controller->Link() . '">Send more?</a>.</p>';
+        $content .= '<br/><p><a href="' . $this->controller->Link() . '">Send more?</a></p>';
 
         $templateData = array("EmailAFriendForm" => null, "EmailAFriendThankYouContent" => $content);
+
         return $this->customise($templateData)->renderWith('EmailAFriendHolder');
     }
 }

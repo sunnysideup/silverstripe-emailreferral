@@ -19,7 +19,7 @@ EmailAFriendForm:
 
 EmailAFriendExtension:
   sender_email_address: "bla@foo.bar"
-  sender_name: "my name goes here
+  sender_name: "my name goes here"
   mail_subject: "subject of email goes here"
   default_message: "hello from us"
   max_message_phour_pip: 5
