@@ -6,7 +6,8 @@ class FriendEmail extends DataObject
         'To' => 'Text',
         'Message' => 'Text',
         'From' => 'Text',
-        'IPAddress' => 'Text'
+        'IPAddress' => 'Text',
+        'Sent' => 'Boolean',
     );
 
     private static $has_one = array(
