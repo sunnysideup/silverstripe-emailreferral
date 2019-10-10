@@ -151,12 +151,14 @@ class EmailAFriendForm extends Form
                     Convert::raw2xml($data['Message']) . '<br/><br/>Page Link : ' . $pageLink. '<br /><br />Sent by: '.$data['YourMailAddress']
                 );
                 $outcome = $email->send();
+
                 if($outcome) {
+                    $friendEmail->Sent = true;
                     $goodSent[] = $to;
                 } else {
+                    $friendEmail->Sent = true;
                     $badSent[] = $to;
                 }
-                $friendEmail->Sent = $outcome;
                 $friendEmail->write();
             }
         }
