@@ -71,54 +71,70 @@ class EmailAFriendForm extends Form
      */
     public function sendemailafriend($RAW_data, $form)
     {
+        $stopSending = false;
         $adminEmail = Config::inst()->get("Email", "admin_email");
         $data = Convert::raw2sql($RAW_data);
+
+        // get page
         if ($page = Page::get()->byID(intval($data['PageID']))) {
             $pageLink = $page->AbsoluteLink();
         }
+
+        // set to list
         $toList = array();
-        if ($this->Config()->get("mail_to_site_owner_only") != 'yes') {
+        if ($this->Config()->get("mail_to_site_owner_only") !== 'yes') {
             $tos = explode(',', $data['To']);
             foreach ($tos as $to) {
-                $toList = array_merge($toList, explode(';', $to));
+                $toList = array_merge($toList, $tos);
             }
         } else {
             $toList[] = $adminEmail;
         }
+
+        //add mailer address
         if ($data['YourMailAddress']) {
             $toList[] = $data['YourMailAddress'];
         }
+
+        //get previously sent ones
         $ip = EmailAFriendExtension::get_ip_user();
-        $count = 0;
-        if (Config::inst()->get("EmailAFriendExtension", "max_message_phour_pip")) {
-            $anHourAgo = date('Y-m-d H:i:s', mktime(date('G') - 1, date('i'), date('s'), date('n'), date('j'), date('Y')));
-            $count = FriendEmail::get()->filter(
+        $mailsSent = 0;
+        $maxSent = intval(Config::inst()->get("EmailAFriendExtension", "max_message_phour_pip"));
+        if ($maxSent) {
+            $anHourAgo = date('Y-m-d H:i:s',strtotime('-1 hour'));
+            $mailsSent = FriendEmail::get()->filter(
                 array(
                     "IPAddress" => $ip,
                     "Created:GreaterThan" => $anHourAgo
                 )
             )->count();
         }
-        if ($this->Config()->get("mail_to_site_owner_only") != 'yes') {
+
+        // set mailFrom
+        if ($this->Config()->get("mail_to_site_owner_only") !== 'yes') {
             $mailFrom = $data['YourMailAddress'];
         } else {
-            if (Config::inst()->get("EmailAFriendExtension", "sender_name")) {
-                $mailFrom = Config::inst()->get("EmailAFriendExtension", "sender_name");
-                if (Config::inst()->get("EmailAFriendRole", "sender_email_address")) {
-                    $mailFrom .= ' <' .Config::inst()->get("EmailAFriendExtension", "sender_email_address") . '>';
-                }
-            } elseif (Config::inst()->get("EmailAFriendExtension", "sender_email_address")) {
-                $mailFrom = Config::inst()->get("EmailAFriendExtension", "sender_email_address");
+            $senderName = Config::inst()->get("EmailAFriendExtension", "sender_name");
+            $senderEmailAddress = Config::inst()->get("EmailAFriendRole", "sender_email_address");
+            if ($senderName && $senderEmailAddress) {
+                $mailFrom = $senderName.' <' . $senderEmailAddress . '>';
+            } elseif ($senderEmailAddress) {
+                $mailFrom = $senderEmailAddress;
             } else {
                 $mailFrom = $adminEmail;
             }
         }
+
+        // send emails
+        $goodSent = [];
+        $badSent = [];
         foreach ($toList as $index => $to) {
-            $messagesPerHour = Config::inst()->get("EmailAFriendExtension", "max_message_phour_pip");
-            if ($messagesPerHour && $count > $messagesPerHour) {
-                $stopIndex = $index;
+            $mailsSent = intval($mailsSent);
+            if ($maxSent && $mailsSent > $maxSent) {
+                $stopSending = true;
                 break;
             } else {
+                $mailsSent++;
                 $friendEmail = new FriendEmail();
                 $friendEmail->To = $to;
                 $friendEmail->Message = $data['Message'];
@@ -135,28 +151,30 @@ class EmailAFriendForm extends Form
                     Convert::raw2xml($data['Message']) . '<br/><br/>Page Link : ' . $pageLink. '<br /><br />Sent by: '.$data['YourMailAddress']
                 );
                 $outcome = $email->send();
-                if ($outcome) {
-                    $count++;
+                if($outcome) {
+                    $goodSent[] = $to;
                 } else {
-                    unset($toList[$index]);
+                    $badSent[] = $to;
                 }
+                $friendEmail->Sent = $outcome;
+                $friendEmail->write();
             }
         }
 
-        if (count($toList) > 0) {
+        if (count($toList)) {
             $content = '';
             $endIndex = isset($stopIndex) ? $stopIndex : count($toList);
-            if (! isset($stopIndex) || $stopIndex > 0) {
+            if (count($goodSent)) {
                 $content .= '<p class="message good">This page has been successfully e-mailed to the following addresses :</p><ul>';
-                for ($i = 0; $i < $endIndex; $i++) {
-                    $content .= '<li>' . $toList[$i] . '</li>';
+                foreach($goodSent as $email) {
+                    $content .= '<li>' . $email . '</li>';
                 }
                 $content .= '</ul>';
             }
-            if ($endIndex < count($toList)) {
+            if (count($badSent)) {
                 $content .= '<p class="message required">This page could not be e-mailed to the following addresses :</p><ul>';
-                for ($i = $endIndex; $i < count($toList); $i++) {
-                    $content .= '<li>' . $toList[$i] . '</li>';
+                foreach($badSent as $email) {
+                    $content .= '<li>' . $email . '</li>';
                 }
                 $content .= '</ul>';
             }

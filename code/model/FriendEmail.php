@@ -50,4 +50,24 @@ class FriendEmail extends DataObject
     private static $plural_name = 'Messages to Friends';
 
     private static $default_sort = 'Created DESC';
+
+    /**
+     * CMS Fields
+     * @return FieldList
+     */
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
+        $page = $this->Page();
+        if($page && $page->exists()) {
+            $fields->addFieldToTab(
+                'Root.Main',
+                LiteralField::create(
+                    'PageLink',
+                    'From Page: <a href="'.$page->CMSEditLink().'">'.$page->Title.'</a>'
+                )
+            );
+        }
+        return $fields;
+    }
 }
