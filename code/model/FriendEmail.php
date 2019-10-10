@@ -44,7 +44,14 @@ class FriendEmail extends DataObject
 
     private static $searchable_fields = array('To', 'Message', 'From', 'IPAddress', 'Page.Title');
 
-    private static $summary_fields = array('Created', 'To', 'ShortMessage', 'From', 'IPAddress', 'Page.Title');
+    private static $summary_fields = array(
+        'Created.Nice' => 'When',
+        'To' => 'To',
+        'ShortMessage' => 'Message',
+        'From' => 'From',
+        'Page.Title' => 'Page',
+        'Sent.Nice' => 'Sent',
+    );
 
     private static $singular_name = 'Message to Friend';
 
@@ -61,12 +68,21 @@ class FriendEmail extends DataObject
         $fields = parent::getCMSFields();
         $page = $this->Page();
         if($page && $page->exists()) {
-            $fields->addFieldToTab(
+            $fields->addFieldsToTab(
                 'Root.Main',
-                LiteralField::create(
-                    'PageLink',
-                    'From Page: <a href="'.$page->CMSEditLink().'">'.$page->Title.'</a>'
-                )
+                [
+                    ReadonlyField::create(
+                        'PageLink',
+                        'From',
+                        DBField::create_field('HTMLText', '<a href="'.$page->CMSEditLink().'">'.$page->Title.'</a>')
+                    ),
+                    ReadonlyField::create(
+                        'CreatedInfo',
+                        'When',
+                        date('d-m-Y H:i', strtotime($this->Created))
+                    ),
+
+                ]
             );
         }
         return $fields;
