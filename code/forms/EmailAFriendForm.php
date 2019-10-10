@@ -138,7 +138,7 @@ class EmailAFriendForm extends Form
                 $friendEmail = new FriendEmail();
                 $friendEmail->To = $to;
                 $friendEmail->Message = $data['Message'];
-                $friendEmail->From = $data['YourMailAddress'];
+                $friendEmail->From = $mailFrom;
                 $friendEmail->IPAddress = $ip;
                 $friendEmail->PageID = $data['PageID'];
                 $friendEmail->write();
