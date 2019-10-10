@@ -165,14 +165,14 @@ class EmailAFriendForm extends Form
             $content = '';
             $endIndex = isset($stopIndex) ? $stopIndex : count($toList);
             if (count($goodSent)) {
-                $content .= '<p class="message good">This page has been successfully e-mailed to the following addresses :</p><ul>';
+                $content .= '<p class="message good">This page has been successfully e-mailed to the following addresses:</p><ul>';
                 foreach($goodSent as $email) {
                     $content .= '<li>' . $email . '</li>';
                 }
                 $content .= '</ul>';
             }
             if (count($badSent)) {
-                $content .= '<p class="message required">This page could not be e-mailed to the following addresses :</p><ul>';
+                $content .= '<p class="message required">This page could not be e-mailed to the following addresses:</p><ul>';
                 foreach($badSent as $email) {
                     $content .= '<li>' . $email . '</li>';
                 }
